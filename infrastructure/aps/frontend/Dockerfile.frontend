@@ -1,0 +1,14 @@
+# Verwende ein Nginx-Basisimage
+FROM nginx:alpine
+
+# Erstelle ein Arbeitsverzeichnis
+WORKDIR /usr/share/nginx/html
+
+# Kopiere die custom index.html und das Bild in den Nginx-Standardordner
+COPY index.html /usr/share/nginx/html/index.html
+COPY pond.png /usr/share/nginx/html/pond.png
+
+# Exponiere den Port 80
+EXPOSE 80
+
+# Standardmäßig startet Nginx automatisch, daher ist kein zusätzlicher Befehl nötig
