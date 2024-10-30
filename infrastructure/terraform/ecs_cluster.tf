@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "nginx_task" {
 [
   {
     "name": "nginx-container",
-    "image": "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/nginx-pond:latest",
+    "image": "537124936702.dkr.ecr.eu-central-1.amazonaws.com/nginx-pond:latest",
     "essential": true,
     "portMappings": [
       {
