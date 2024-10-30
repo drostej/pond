@@ -1,3 +1,6 @@
+# Start des dockerfils
+# docker build -t nginx-pond -f Dockerfile.frontend .
+
 # Verwende ein Nginx-Basisimage
 FROM nginx:alpine
 
