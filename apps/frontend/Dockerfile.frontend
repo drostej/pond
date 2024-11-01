@@ -1,5 +1,16 @@
-# Start des dockerfils
-# docker build -t nginx-pond -f Dockerfile.frontend .
+# Handling des dockerfils
+
+# Der -t Parameter hat der Widererkennung nach den Namen des AWS Servicerepositories haben
+# docker build -t pond-ecr-repo -f Dockerfile.frontend .
+
+# docker tag
+# docker tag pond-ecr-repo:latest 537124936702.dkr.ecr.eu-central-1.amazonaws.com/pond-ecr-repo:latest
+
+# docker push
+# docker push 537124936702.dkr.ecr.eu-central-1.amazonaws.com/pond-ecr-repo:latest
+
+# aws-vault exec pond-ecr-repo -- aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 537124936702.dkr.ecr.eu-central-1.amazonaws.com
+
 
 FROM nginx:alpine
 
