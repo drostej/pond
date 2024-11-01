@@ -1,0 +1,11 @@
+# Start des dockerfils
+# docker build -t nginx-pond -f Dockerfile.frontend .
+
+FROM nginx:alpine
+
+WORKDIR /usr/share/nginx/html
+
+COPY index.html /usr/share/nginx/html/index.html
+COPY pond.png /usr/share/nginx/html/pond.png
+
+EXPOSE 80
