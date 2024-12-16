@@ -31,4 +31,16 @@ resource "aws_dynamodb_table" "state_lock_table" {
   }
 }
 
+resource "aws_eip" "lb" {
+}
+
+resource "aws_nat_gateway" "example" {
+  allocation_id = aws_eip.lb.id
+  subnet_id     = var.subnet_id_eur_cent_1
+
+  tags = {
+    Name = "nat-pond-gateway"
+  }
+
+}
 

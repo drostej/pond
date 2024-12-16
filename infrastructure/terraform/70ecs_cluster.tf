@@ -10,7 +10,7 @@ resource "aws_ecs_service" "nginx_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = [var.subnet_id_eur_cent_1]  # Ersetze dies mit einem öffentlichen Subnetz
+    subnets         = [var.subnet_id_eur_cent_1]
     security_groups = [aws_security_group.nginx_sg.id]
     assign_public_ip = true
   }
@@ -25,22 +25,37 @@ resource "aws_ecs_task_definition" "nginx_task" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"
   memory                   = "512"
-
-  container_definitions = <<DEFINITION
-[
-  {
-    "name": "nginx-container",
-    "image": "537124936702.dkr.ecr.eu-central-1.amazonaws.com/pond-ecr-repo:latest",
-    "essential": true,
-    "portMappings": [
-      {
-        "containerPort": 80,
-        "hostPort": 80
-      }
-    ]
+  runtime_platform {
+    cpu_architecture = "ARM64"
   }
-]
-DEFINITION
+  container_definitions = <<DEFINITION
+  [
+    {
+      "name": "nginx-container",
+      "image": "537124936702.dkr.ecr.eu-central-1.amazonaws.com/pond-ecr-repo:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/nginx",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+  DEFINITION
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 }
 
+resource "aws_cloudwatch_log_group" "ecs_log_group" {
+  name              = "/ecs/nginx"   # Dies sollte mit der Log-Gruppe in der Task-Definition übereinstimmen
+  retention_in_days = 7              # Optional: Aufbewahrungszeit in Tagen
+}
