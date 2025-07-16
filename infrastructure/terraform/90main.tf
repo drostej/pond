@@ -2,16 +2,20 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
+      version = "~> 5.72.0"
     }
   }
 }
 
 provider "aws" {
   region = "eu-central-1"
+  profile = "tefde-sandbox"
 }
 
+provider "random" {}
+
 resource "aws_s3_bucket" "terraform-state" {
-  bucket = "terraform-state-pond"
+  bucket = "terraform-state-pond-two"
 }
 
 resource "aws_s3_bucket_versioning" "terraform-state" {
